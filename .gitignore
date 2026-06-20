@@ -1,0 +1,20 @@
+# APIキーなどの秘密情報（GitHubに上げてはいけない）
+.env
+
+# Pythonの一時ファイル
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 仮想環境
+venv/
+.venv/
+env/
+
+# IDE設定
+.vscode/
+.idea/
+
+# Streamlitのキャッシュ
+.streamlit/
