@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>伝わる文章添削ツール</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Hiragino Sans", "Noto Sans JP", sans-serif;
+      background: #f8f9fa;
+      color: #1a1a2e;
+      line-height: 1.7;
+    }
+
+    /* ナビゲーション */
+    nav {
+      position: sticky;
+      top: 0;
+      background: #fff;
+      border-bottom: 1px solid #e9ecef;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+      z-index: 100;
+    }
+    .nav-logo { font-weight: 700; font-size: 1rem; color: #4361ee; }
+    .nav-link {
+      background: #4361ee;
+      color: #fff;
+      text-decoration: none;
+      padding: 0.45rem 1.1rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .nav-link:hover { background: #3a56d4; }
+
+    /* ヒーロー */
+    .hero {
+      background: linear-gradient(135deg, #4361ee 0%, #7b5ea7 100%);
+      color: #fff;
+      text-align: center;
+      padding: 5rem 1.5rem 4rem;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 20px;
+      padding: 0.3rem 1rem;
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 { font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 800; margin-bottom: 1rem; }
+    .hero p  { font-size: clamp(1rem, 2.5vw, 1.2rem); opacity: 0.9; max-width: 600px; margin: 0 auto 2rem; }
+    .hero-btn {
+      display: inline-block;
+      background: #fff;
+      color: #4361ee;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 0.85rem 2.2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    }
+    .hero-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+
+    /* セクション共通 */
+    section { padding: 4rem 1.5rem; }
+    .container { max-width: 860px; margin: 0 auto; }
+    .section-label {
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: #4361ee;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    h2 {
+      text-align: center;
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      font-weight: 800;
+      margin-bottom: 2.5rem;
+      color: #1a1a2e;
+    }
+
+    /* 課題 */
+    .problems { background: #fff; }
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .problem-card {
+      background: #f0f4ff;
+      border-left: 4px solid #4361ee;
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      font-size: 0.95rem;
+    }
+    .problem-card::before { content: "😓 "; }
+
+    /* 機能 */
+    .features { background: #f8f9fa; }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem;
+    }
+    .feature-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+    .feature-icon { font-size: 2rem; margin-bottom: 0.7rem; }
+    .feature-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; color: #1a1a2e; }
+    .feature-card p  { font-size: 0.88rem; color: #555; }
+
+    /* 使い方 */
+    .howto { background: #fff; }
+    .steps { display: flex; flex-direction: column; gap: 1.2rem; max-width: 640px; margin: 0 auto; }
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.2rem;
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 2.2rem;
+      height: 2.2rem;
+      background: #4361ee;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+    .step-body h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .step-body p  { font-size: 0.88rem; color: #555; }
+
+    /* 今後の機能 */
+    .upcoming { background: #f8f9fa; }
+    .upcoming-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.8rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .upcoming-list li {
+      background: #fff;
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    }
+    .upcoming-list li::before { content: "🔜"; font-size: 1rem; }
+
+    /* CTA */
+    .cta {
+      background: linear-gradient(135deg, #4361ee 0%, #7b5ea7 100%);
+      color: #fff;
+      text-align: center;
+      padding: 4rem 1.5rem;
+    }
+    .cta h2 { color: #fff; margin-bottom: 0.8rem; }
+    .cta p  { opacity: 0.9; margin-bottom: 2rem; font-size: 1rem; }
+    .cta-btn {
+      display: inline-block;
+      background: #fff;
+      color: #4361ee;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 0.85rem 2.4rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: transform 0.2s;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+
+    /* フッター */
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.8rem;
+      color: #999;
+      background: #fff;
+      border-top: 1px solid #e9ecef;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ナビゲーション -->
+  <nav>
+    <span class="nav-logo">✏️ 伝わる文章添削ツール</span>
+    <!-- Streamlit Community Cloud デプロイ済みURL -->
+    <a class="nav-link" href="https://writing-correction-tool-mygnto9hpkyehkzquhma9q.streamlit.app" target="_blank" rel="noopener noreferrer">今すぐ試す →</a>
+  </nav>
+
+  <!-- ヒーロー -->
+  <section class="hero">
+    <div class="hero-badge">✨ AI文章添削ツール</div>
+    <h1>伝わる文章添削ツール</h1>
+    <p>文章を入力すると、AIが修正文・変更理由・相手に与える印象・別パターン案を提案します</p>
+    <a class="hero-btn" href="https://writing-correction-tool-mygnto9hpkyehkzquhma9q.streamlit.app" target="_blank" rel="noopener noreferrer">無料で試してみる →</a>
+  </section>
+
+  <!-- 解決する課題 -->
+  <section class="problems">
+    <div class="container">
+      <p class="section-label">Problem</p>
+      <h2>こんな悩みはありませんか？</h2>
+      <div class="problem-grid">
+        <div class="problem-card">自分の文章が正しいか分からない</div>
+        <div class="problem-card">どこを直せばいいか分からない</div>
+        <div class="problem-card">TPOに合った表現か不安</div>
+        <div class="problem-card">相手にどう伝わるか分からない</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 主な機能 -->
+  <section class="features">
+    <div class="container">
+      <p class="section-label">Features</p>
+      <h2>AIが6つの観点で添削します</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📝</div>
+          <h3>修正文</h3>
+          <p>より伝わりやすい文章に書き直します。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💡</div>
+          <h3>変更した理由</h3>
+          <p>なぜその表現に変えたかを箇条書きで説明します。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">👀</div>
+          <h3>相手に与える印象</h3>
+          <p>受け取った相手がどう感じるかを教えます。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔄</div>
+          <h3>別パターン案</h3>
+          <p>丁寧版・短め版・やわらかい版など複数の案を提示します。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📋</div>
+          <h3>コピペ用完成文</h3>
+          <p>そのままコピーして使える完成形を提供します。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>用途 × トーン選択</h3>
+          <p>LINE・メール・報告文など用途と、丁寧・短くなどトーンを選んで添削できます。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 使い方 -->
+  <section class="howto">
+    <div class="container">
+      <p class="section-label">How to use</p>
+      <h2>3ステップで使えます</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h3>文章を入力する</h3>
+            <p>送りたいLINEやメール、書いた文章をそのままテキストエリアに貼り付けます。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h3>用途とトーンを選ぶ</h3>
+            <p>「メール」「丁寧」など、文章の目的と希望する雰囲気を選択します。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h3>添削ボタンを押すだけ</h3>
+            <p>AIが修正文・理由・印象・別案・完成文をまとめて提案します。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 今後追加予定の機能 -->
+  <section class="upcoming">
+    <div class="container">
+      <p class="section-label">Roadmap</p>
+      <h2>今後追加予定の機能</h2>
+      <ul class="upcoming-list">
+        <li>添削履歴の保存・一覧表示</li>
+        <li>添削前後の差分ハイライト</li>
+        <li>よく使うフレーズのテンプレート</li>
+        <li>文章の読みやすさスコア表示</li>
+        <li>SNSシェア機能</li>
+        <li>スマホ向けUI最適化</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <h2>さっそく使ってみましょう</h2>
+    <p>無料で試せます。難しい設定は不要です。</p>
+    <a class="cta-btn" href="https://writing-correction-tool-mygnto9hpkyehkzquhma9q.streamlit.app" target="_blank" rel="noopener noreferrer">添削ツールを開く →</a>
+  </section>
+
+  <!-- フッター -->
+  <footer>
+    <p>© 2026 伝わる文章添削ツール — Powered by OpenAI GPT-4o mini</p>
+  </footer>
+
+</body>
+</html>
