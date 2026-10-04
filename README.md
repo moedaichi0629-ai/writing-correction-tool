@@ -1,4 +1,37 @@
-# ✏️ 伝わる文章添削ツール
+# 伝わる文章添削ツール
+
+LINE・メール・報告文を、用途と希望するトーンに合わせてAIが添削するWebアプリです。
+
+[作品一覧](https://github.com/moedaichi0629-ai/landing-page) · [ポートフォリオ](https://moedaichi0629-ai.github.io/landing-page/)
+
+## 解決する課題
+
+**想定利用者：** 送信前に文章の表現を整えたい利用者
+
+丁寧さや伝わりやすさを考えながら文面を直す手間。
+
+## 主な機能
+
+- 用途・トーンに合わせた添削
+- 変更理由・相手に与える印象・別案の表示
+- セッション内の添削履歴
+
+## デモ・利用方法
+
+[デモ](https://writing-correction-tool-mygnto9hpkyehkzquhma9q.streamlit.app)。休止後の起動には時間がかかる場合があります。
+
+## 使用技術
+
+Python / Streamlit / OpenAI API
+
+## 工夫した点
+
+修正文だけでなく変更理由も表示し、スマートフォンで使いやすい入力画面にしています。
+
+## セットアップ・技術詳細
+
+<details>
+<summary>操作方法・構成・設定手順などの詳細を開く</summary>
 
 LINE・メール・報告文など、送る前の文章をAIに添削してもらえるWebアプリです。
 
@@ -124,3 +157,6 @@ writing-correction-tool/
 ## 注意事項
 
 `.env` には OpenAI APIキーが含まれるため、リポジトリには含まれていません。各自で取得・設定してください。
+
+</details>
+
