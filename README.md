@@ -2,7 +2,7 @@
 
 LINE・メール・報告文を、用途と希望するトーンに合わせてAIが添削するWebアプリです。
 
-[作品一覧](https://github.com/moedaichi0629-ai/landing-page) · [ポートフォリオ](https://moedaichi0629-ai.github.io/landing-page/)
+[作品一覧](https://github.com/moedaichi0629-ai/landing-page) · [ポートフォリオ](https://moedaichi0629-ai.github.io/)
 
 ## 解決する課題
 
